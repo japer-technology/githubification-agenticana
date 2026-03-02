@@ -65,5 +65,10 @@ class Sentinel:
             print("[+] Sentinel: Healing process initiated.")
 
 if __name__ == "__main__":
-    s = Sentinel()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--root", default=".")
+    args = parser.parse_args()
+
+    s = Sentinel(project_root=args.root)
     s.heal()

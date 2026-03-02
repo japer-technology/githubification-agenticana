@@ -246,7 +246,8 @@ routing_hints:
 | `soul_inject.py` | `python scripts/soul_inject.py "task"` | Retrieve RAG-Enhanced Soul Memory |
 | `capture_ui.py` | `python scripts/capture_ui.py "url"` | Visual verification |
 | `notify.ps1` | `powershell -File scripts/notify.ps1` | Audio/Visual Alert |
-| `swarm_dispatcher.py` | `python scripts/swarm_dispatcher.py manifest.json` | Parallel agent execution |
+| `swarm_dispatcher.py` | `python scripts/swarm_dispatcher.py manifest.json --shadow` | Parallel & Isolated agent execution |
+| `sandbox_manager.py` | `python scripts/sandbox_manager.py` | Environment isolation & merge |
 | `swarm_status.py` | `python scripts/swarm_status.py` | Real-time swarm monitoring |
 | `sentinel.py` | `python scripts/sentinel.py` | Autonomous error repair |
 | `vector_memory.py` | `python scripts/vector_memory.py` | Lightweight semantic store |

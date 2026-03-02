@@ -31,11 +31,16 @@ Thumbs.db
 Desktop.ini
 
 # ── Agentica runtime files ────────────────────────────────────────────────────
-# Commit decisions.json + patterns.json — they are shared team knowledge
-# Exclude only large runtime-generated files
+# The following contain personal data or local secrets — NEVER commit these
+.Agentica/
 memory/trajectories/
 memory/*.log
 
+# These contain shared team logic (optional to share)
+# memory/reasoning-bank/decisions.json
+# memory/reasoning-bank/patterns.json
+
+# Exclude only large runtime-generated files
 # Generated workspace files (user-specific)
 *.code-workspace
 

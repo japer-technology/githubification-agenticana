@@ -92,23 +92,69 @@ class SwarmDispatcher:
             task.status = "ERROR"
             print(f"{RED}[!] Error executing task {task.id}: {e}{RESET}")
 
-    def dispatch(self, parallel=True):
-        print(f"{YELLOW}[!] INITIALIZING SWARM DISPATCHER (Parallel={parallel}){RESET}")
-        threads = []
+    def dispatch(self, parallel=True, shadow=False):
+        if shadow:
+            from sandbox_manager import SandboxManager
+            sm = SandboxManager()
+            sm.initialize_sandbox()
 
+            # Re-map task commands to run in sandbox if needed?
+            # Actually run_task uses subprocess with cwd in shadow mode if we modify it.
+            # But SandboxManager.run_in_sandbox is better.
+
+            print(f"{YELLOW}[!] INITIALIZING SHADOW SWARM (Sandbox=Active){RESET}")
+            # We will use a modified run_task that uses the sandbox path
+            self.sandbox_path = sm.sandbox_path
+        else:
+            self.sandbox_path = None
+            print(f"{YELLOW}[!] INITIALIZING SWARM DISPATCHER (Parallel={parallel}){RESET}")
+
+        threads = []
         for task in self.tasks:
+            target = self.run_task_shadow if shadow else self.run_task
             if parallel:
-                t = threading.Thread(target=self.run_task, args=(task,))
+                t = threading.Thread(target=target, args=(task,))
                 t.start()
                 threads.append(t)
             else:
-                self.run_task(task)
+                target(task)
 
         if parallel:
             for t in threads:
                 t.join()
 
         self.generate_report()
+
+        if shadow:
+            is_healthy, _ = sm.audit_sandbox()
+            if is_healthy:
+                sm.merge_sandbox()
+            else:
+                print(f"{RED}[!] Shadow Audit FAILED. Production NOT updated.{RESET}")
+
+    def run_task_shadow(self, task):
+        # Implementation of run_task but forced in sandbox CWD
+        task.status = "RUNNING"
+        task.start_time = datetime.now()
+        print(f"{BLUE}[*] Shadow Dispatch -> Agent: {task.agent} | Task: {task.id}{RESET}")
+
+        try:
+            process = subprocess.Popen(
+                task.command,
+                shell=True,
+                cwd=str(self.sandbox_path),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                encoding='utf-8',
+                errors='replace'
+            )
+            process.wait()
+            task.end_time = datetime.now()
+            task.status = "COMPLETED" if process.returncode == 0 else "FAILED"
+        except Exception as e:
+            task.status = "ERROR"
+            print(f"{RED}[!] Error in Shadow Task {task.id}: {e}{RESET}")
 
     def generate_report(self):
         report_path = self.logs_dir / "report.json"
@@ -136,9 +182,10 @@ class SwarmDispatcher:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python swarm_dispatcher.py manifest.json [--sequential]")
+        print("Usage: python swarm_dispatcher.py manifest.json [--sequential] [--shadow]")
         sys.exit(1)
 
     parallel_mode = "--sequential" not in sys.argv
+    shadow_mode = "--shadow" in sys.argv
     dispatcher = SwarmDispatcher(sys.argv[1])
-    dispatcher.dispatch(parallel=parallel_mode)
+    dispatcher.dispatch(parallel=parallel_mode, shadow=shadow_mode)
