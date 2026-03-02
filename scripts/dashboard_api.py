@@ -4,16 +4,34 @@ import json
 import os
 from pathlib import Path
 
-# Agentica Control Center API (P7)
+# Agentica Control Center API (Hardened)
 PORT = 8080
+AUTH_KEY_PATH = Path(".Agentica/auth.key")
+
+def get_auth_key():
+    if AUTH_KEY_PATH.exists():
+        return AUTH_KEY_PATH.read_text().strip()
+    return None
 
 class DashboardHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
+        # 1. Security Gate: Check for API Key
+        auth_header = self.headers.get('X-Agentica-Auth')
+        expected_key = get_auth_key()
+
+        if self.path.startswith('/api/') and auth_header != expected_key:
+            self.send_response(401)
+            self.end_headers()
+            self.wfile.write(b'{"error": "Unauthorized"}')
+            return
+
         if self.path == '/api/status':
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Access-Control-Allow-Headers', 'X-Agentica-Auth')
             self.end_headers()
+            # ... rest of status logic ...
 
             # Aggregate status
             status = {
@@ -54,6 +72,7 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
         return 0
 
 if __name__ == "__main__":
-    print(f"[*] Starting Agentica Control Center API on port {PORT}...")
-    with socketserver.TCPServer(("", PORT), DashboardHandler) as httpd:
+    print(f"[*] Starting Agentica Control Center API on http://127.0.0.1:{PORT}...")
+    # Bind to localhost only for security
+    with socketserver.TCPServer(("127.0.0.1", PORT), DashboardHandler) as httpd:
         httpd.serve_forever()

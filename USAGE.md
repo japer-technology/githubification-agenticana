@@ -219,7 +219,17 @@ python scripts/swarm_dispatcher.py .Agentica/swarm_manifest.json
 python scripts/swarm_status.py
 ```
 
----
+### Control Center Dashboard (🔐 Secure)
+Monitor your workforce via a beautiful web interface.
+
+```powershell
+# Start the secure Control Center API
+python scripts/dashboard_api.py
+```
+
+- **URL**: `http://127.0.0.1:8080/dashboard/index.html`
+- **Security**: The dashboard is restricted to **localhost only**.
+- **Auth Key**: You will be prompted for an API key. Find yours in `.Agentica/auth.key`.
 
 ## 6. Automation & CI/CD
 
