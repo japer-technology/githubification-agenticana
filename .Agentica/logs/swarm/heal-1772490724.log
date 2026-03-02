@@ -1,7 +1,0 @@
---- SWARM TASK: heal-1772490724 ---
-Agent: debugger
-Started: 2026-03-03 02:32:04.458631
-Command: python scripts/agent_cli.py @debugger 'Fix failures in audit: Audit/Lint/Verify'
-
-[*] Agent 'debugger' received task: 'Fix
-[+] Agent 'debugger' completed task: 'Fix

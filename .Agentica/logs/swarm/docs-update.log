@@ -1,7 +1,0 @@
---- SWARM TASK: docs-update ---
-Agent: orchestrator
-Started: 2026-03-03 02:22:12.178507
-Command: python scripts/agent_cli.py @orchestrator 'Update ARCHITECTURE.md for v3.0'
-
-[*] Agent 'orchestrator' received task: 'Update
-[+] Agent 'orchestrator' completed task: 'Update

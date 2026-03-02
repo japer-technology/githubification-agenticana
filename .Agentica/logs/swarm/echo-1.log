@@ -1,7 +1,0 @@
---- SWARM TASK: echo-1 ---
-Agent: frontend-specialist
-Started: 2026-03-03 02:16:47.991126
-Command: powershell Write-Host 'Frontend Task Start'; Start-Sleep -Seconds 2; Write-Host 'Frontend Task End'
-
-Frontend Task Start
-Frontend Task End

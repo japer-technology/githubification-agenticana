@@ -1,7 +1,0 @@
---- SWARM TASK: echo-2 ---
-Agent: backend-specialist
-Started: 2026-03-03 02:16:48.019931
-Command: powershell Write-Host 'Backend Task Start'; Start-Sleep -Seconds 3; Write-Host 'Backend Task End'
-
-Backend Task Start
-Backend Task End
