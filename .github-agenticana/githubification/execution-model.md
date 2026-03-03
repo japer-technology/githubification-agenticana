@@ -42,7 +42,7 @@ This means every GitHub Issue is a bidirectional communication channel: the user
 permissions:
   contents: write    # Read/write repo files, commit and push
   issues: write      # Post comments, add reactions
-  actions: write     # Manage workflow artifacts
+  actions: write     # Cancel or re-run workflows
 ```
 
 These permissions define the constitutional limits of the agent. It can read and modify repository contents, interact with issues, and manage workflow state — but nothing beyond what these scopes allow.
