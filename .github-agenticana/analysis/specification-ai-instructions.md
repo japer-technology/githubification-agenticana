@@ -623,7 +623,10 @@ The 20 agents are:
 17. seo-specialist — SEO analysis and optimization — SIMPLE — DEFCON 5 — 🔍
 18. project-planner — project planning, roadmapping — COMPLEX — DEFCON 5 — 📋
 19. product-manager — product strategy, prioritization — MODERATE — DEFCON 5 — 📊
-20. explorer-agent — codebase exploration — SIMPLE — DEFCON 5 — 🔭
+
+(Note: The specification references "20 specialist agents" — the 19 above plus the
+orchestrator acting in debate mode as the 20th role. The label "agenticana" is auto-routed
+and does not map to a named agent.)
 
 Include a note that agent YAML specs live in agents/*.yaml in the repo root and are
 read at runtime by the workflow (not modified).
