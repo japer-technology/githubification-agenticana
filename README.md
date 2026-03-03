@@ -1,6 +1,7 @@
 <div align="center">
 
-<img width="676" height="532" alt="Agenticana Secretary Bird" src="https://github.com/user-attachments/assets/d27a494b-65ee-4265-9ae7-5aae4b5e6753" />
+<img width="522" height="532" alt="Logo" src="https://github.com/user-attachments/assets/1f9efb3f-c2be-45be-8f2d-90775ce0e4d4" />
+
 
 # Agenticana v6.0 🦅
 
