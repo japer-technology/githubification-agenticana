@@ -417,6 +417,8 @@ git push
 
 If the upstream has modified files that the reconciler also generates (e.g., both upstream and the fork have `.github/workflows/github-agenticana-agent.yml`), the reconciler will overwrite the upstream version with the fork's version from `.github-agenticana/workflows/`. This is by design — the fork's AI infrastructure takes precedence.
 
+> **⚠️ Warning:** Before running the reconciler after an upstream pull, review `git diff` to check whether the upstream has added workflows or templates with the same filenames declared in the reconciler manifest. If a collision is detected, review the upstream changes before allowing the reconciler to overwrite them. The reconciler logs every file it copies, making collisions visible in the output.
+
 ---
 
 ## 5. Execution Model (Evolved from v1 §2, v2 §2)
@@ -740,7 +742,7 @@ The ReasoningBank integration from v1 §4.3 and debate-specific integration from
 > **Note:** This is an area where the containment model introduces a trade-off. The ReasoningBank in `memory/reasoning-bank/` lives outside `.github-agenticana/`. The v3 approach is:
 > 1. Read from `memory/reasoning-bank/` (read is always safe)
 > 2. Write new decisions to `.github-agenticana/state/reasoning-bank/` (contained)
-> 3. The reconciler can optionally merge contained decisions back into the main ReasoningBank
+> 3. Merging contained decisions back into the main ReasoningBank is **not implemented by the reconciler** — it is left to the fork maintainer as a manual step or a future enhancement. The contained decisions remain readable and auditable in `.github-agenticana/state/reasoning-bank/` regardless.
 
 ### 8.5 Memory Properties (Unchanged from v1 §4.4)
 
@@ -783,7 +785,7 @@ The containment model introduces new security properties and one new finding:
 | SEC-009–SEC-012 | Various | All v2 findings | All v2 mitigations (unchanged) |
 | SEC-013 | 🟢 Low | Reconciler could be tricked into overwriting critical files | Manifest declares explicit target paths; reconciler only copies from declared sources |
 | SEC-014 | 🟡 Medium | `git add .github-agenticana/state/` could still be large | Add `.github-agenticana/state/.gitkeep` for empty directories; size limits in state manager |
-| SEC-015 | 🟢 Low | Upstream could add a `.github-agenticana/` directory, conflicting with the fork | Unlikely — directory name is fork-specific. If it happens, rename the fork's directory. |
+| SEC-015 | 🟢 Low | Upstream could add a `.github-agenticana/` directory, conflicting with the fork | Unlikely — directory name is fork-specific. If it happens, a migration is required: rename the directory (e.g., to `.github-agenticana-{fork-name}/`) and update all path references in workflows, scripts, and documentation. To mitigate proactively, fork maintainers may choose a namespaced directory from the start. |
 
 ### 9.4 DEFCON Level Interaction with Debates (Unchanged from v2 §12.2)
 
