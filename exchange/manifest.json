@@ -1,6 +1,8 @@
 {
-  "version": "1.0.0",
-  "last_updated": "2026-03-03T02:00:00Z",
+  "version": "6.0.0",
+  "edition": "Secretary Bird",
+  "mascot": "🦅",
+  "last_updated": "2026-03-03T05:00:00Z",
   "components": {
     "react-expert": {
       "type": "agent",
@@ -15,6 +17,27 @@
       "path": "skills/tailwind-expert/SKILL.md",
       "url": "https://raw.githubusercontent.com/ashrafmusa/agenticana/main/skills/tailwind-expert/SKILL.md",
       "description": "Utility-first CSS patterns"
+    },
+    "guardian-mode": {
+      "type": "script",
+      "version": "6.0.0",
+      "path": "scripts/guardian_mode.py",
+      "url": "https://raw.githubusercontent.com/ashrafmusa/agenticana/main/scripts/guardian_mode.py",
+      "description": "P16: Git pre-commit AI guardian"
+    },
+    "real-simulacrum": {
+      "type": "script",
+      "version": "6.0.0",
+      "path": "scripts/real_simulacrum.py",
+      "url": "https://raw.githubusercontent.com/ashrafmusa/agenticana/main/scripts/real_simulacrum.py",
+      "description": "P15: Real LLM agent debate engine"
+    },
+    "nl-swarm": {
+      "type": "script",
+      "version": "6.0.0",
+      "path": "scripts/nl_swarm.py",
+      "url": "https://raw.githubusercontent.com/ashrafmusa/agenticana/main/scripts/nl_swarm.py",
+      "description": "P17: Natural language to swarm manifest"
     }
   }
 }

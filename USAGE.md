@@ -1,6 +1,7 @@
-# Agenticana v2 — Complete Usage Guide
+# Agenticana v6.0 — Complete Usage Guide 🦅 Secretary Bird Edition
 
-> Everything you need to know to use Agenticana v2 on **Windows + VS Code + GitHub Copilot**.
+> Everything you need to know to use Agenticana v6.0 on **Windows + VS Code + GitHub Copilot**.
+> *"We don't react. We stomp, record, and move forward with proof."*
 
 ---
 
