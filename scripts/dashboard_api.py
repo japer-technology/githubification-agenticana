@@ -5,6 +5,7 @@ Flask API with unbuffered subprocess output and incremental log endpoint.
 import os
 import json
 import subprocess
+import threading
 from pathlib import Path
 from datetime import datetime
 from flask import Flask, jsonify, request, send_from_directory, redirect, Response
@@ -127,17 +128,32 @@ def api_run():
         return jsonify({"error": "Task not found", "task": task, "valid": list(SCRIPT_MAP.keys())}), 404
 
     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    log_file = open(LOG_PATH, "a", encoding="utf-8")
-    log_file.write(f"\n--- Starting '{task}' at {datetime.now()} ---\n")
-    log_file.flush()
+    log_file_handle = open(LOG_PATH, "a", encoding="utf-8")
+    log_file_handle.write(f"\n--- Starting '{task}' at {datetime.now()} ---\n")
+    log_file_handle.flush()
 
-    # PYTHONUNBUFFERED=1 forces immediate stdout flush in subprocesses
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
-    subprocess.Popen(cmd, stdout=log_file, stderr=log_file, cwd=str(BASE_DIR), env=env)
+
+    proc = subprocess.Popen(cmd, stdout=log_file_handle, stderr=log_file_handle, cwd=str(BASE_DIR), env=env)
     print(f"[EXEC] Launched: {' '.join(cmd)}")
 
-    # Return current log size so client can poll for new lines from this offset
+    # ── Background watcher: fires post-commit hook when task finishes ──────────
+    def watch_and_commit(process, lf, t):
+        process.wait()  # block until task subprocess exits
+        lf.write(f"\n--- Task '{t}' completed. Running auto-commit hook... ---\n")
+        lf.flush()
+        hook_cmd = ["python", str(BASE_DIR / "scripts" / "post_task_commit.py"), t]
+        hook = subprocess.Popen(hook_cmd, stdout=lf, stderr=lf, cwd=str(BASE_DIR), env=env)
+        hook.wait()
+        lf.write(f"--- Auto-commit hook done for '{t}' ---\n")
+        lf.flush()
+        lf.close()
+        print(f"[HOOK] Post-commit done for task: {t}")
+
+    watcher = threading.Thread(target=watch_and_commit, args=(proc, log_file_handle, task), daemon=True)
+    watcher.start()
+
     offset = LOG_PATH.stat().st_size if LOG_PATH.exists() else 0
     return jsonify({"status": "started", "task": task, "log_offset": offset})
 
