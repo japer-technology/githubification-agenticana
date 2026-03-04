@@ -1,13 +1,13 @@
 """
-Agenticana Dashboard API — v7.0 (Flask Edition)
-Rebuilt from scratch to fix persistent 404 routing issues.
+Agenticana Dashboard API — v7.1 (Live Log Streaming)
+Flask API with unbuffered subprocess output and incremental log endpoint.
 """
 import os
 import json
 import subprocess
 from pathlib import Path
 from datetime import datetime
-from flask import Flask, jsonify, request, send_from_directory, redirect
+from flask import Flask, jsonify, request, send_from_directory, redirect, Response
 
 # ── Config ────────────────────────────────────────────────────────────────────
 PORT = 8080
@@ -131,13 +131,50 @@ def api_run():
     log_file.write(f"\n--- Starting '{task}' at {datetime.now()} ---\n")
     log_file.flush()
 
-    subprocess.Popen(cmd, stdout=log_file, stderr=log_file, cwd=str(BASE_DIR))
+    # PYTHONUNBUFFERED=1 forces immediate stdout flush in subprocesses
+    env = os.environ.copy()
+    env["PYTHONUNBUFFERED"] = "1"
+    subprocess.Popen(cmd, stdout=log_file, stderr=log_file, cwd=str(BASE_DIR), env=env)
     print(f"[EXEC] Launched: {' '.join(cmd)}")
 
-    return jsonify({"status": "started", "task": task})
+    # Return current log size so client can poll for new lines from this offset
+    offset = LOG_PATH.stat().st_size if LOG_PATH.exists() else 0
+    return jsonify({"status": "started", "task": task, "log_offset": offset})
 
 
 # ── Boot ──────────────────────────────────────────────────────────────────────
+
+@app.route("/api/logs")
+def api_logs():
+    """Return log lines from a byte offset (for incremental polling)."""
+    if not check_auth():
+        return jsonify({"error": "Unauthorized"}), 401
+
+    offset = int(request.args.get("offset", 0))
+
+    if not LOG_PATH.exists():
+        return jsonify({"lines": [], "offset": 0})
+
+    size = LOG_PATH.stat().st_size
+    if offset >= size:
+        return jsonify({"lines": [], "offset": size})
+
+    with open(LOG_PATH, "rb") as f:
+        f.seek(max(0, offset))
+        raw = f.read()
+
+    lines = raw.decode("utf-8", errors="replace").splitlines()
+    return jsonify({"lines": lines, "offset": size})
+
+
+@app.route("/api/logs/clear", methods=["POST"])
+def api_logs_clear():
+    if not check_auth():
+        return jsonify({"error": "Unauthorized"}), 401
+    if LOG_PATH.exists():
+        LOG_PATH.write_text("", encoding="utf-8")
+    return jsonify({"status": "cleared"})
+
 
 if __name__ == "__main__":
     print(f"[*] Agenticana Dashboard API v7.0 — http://127.0.0.1:{PORT}")
