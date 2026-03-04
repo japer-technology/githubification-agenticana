@@ -160,23 +160,36 @@ When auto-applying an agent, inform the user:
 
 ---
 
- ## ⚖️ EFFICIENCY HANDSHAKE (TIER 0)
+## ⚖️ EFFICIENCY HANDSHAKE (TIER 0)
 
- > 🔴 **MANDATORY for LARGE FILE EDITS and ARCHITECTURAL TASKS.**
+> 🔴 **MANDATORY for ANY file edit where the file exceeds 150 lines.**
 
- 1. **Phase 1: Scout (Flash-Lite)**:
-     - Run `grep_search` or `find_by_name` to identify relevant files/lines.
-     - **Autonomy**: Scout has full autonomy to read and search.
- 2. **Phase 2: Context Trimming**:
-     - Use `python scripts/context_trimmer.py {file} {pattern} {window}`.
-     - **Window Size**: 50 lines (Standard) / 100+ lines (Architectural).
- 3. **Phase 3: The Handshake**:
-     - Pass the *trimmed* context to the **Builder (Pro)** model.
- 4. **Phase 4: Sentry Verify**:
-     - Use cheaper model to verify Pro's output.
-     - **Regression Check**: If an error is detected → **STOP & ASK**.
+### Hard Thresholds
 
- ---
+| File Size | Action |
+|-----------|--------|
+| ≤ 150 lines | Read normally with `view_file` |
+| 151–400 lines | Run trimmer with `window=60` before reading |
+| 401–800 lines | Run trimmer with `window=80 --all-matches` |
+| 800+ lines | Run trimmer with `window=100 --all-matches`, then edit only trimmed sections |
+
+### Protocol
+
+1. **Phase 1: Scout** — `grep_search` to find the exact function/pattern name.
+2. **Phase 2: Trim** — Run trimmer with the found pattern:
+   ```bash
+   python scripts/context_trimmer.py {file} "{pattern}" {window} --all-matches
+   ```
+   Check stderr for **savings %**. If savings < 20%, skip and read normally.
+3. **Phase 3: Edit** — Apply edits using ONLY the trimmed line ranges.
+4. **Phase 4: Verify** — Run `grep_search` post-edit to confirm the change landed.
+
+### Token Budget Rule
+
+> If estimated tokens > 6,000 for a single file read → **MUST use trimmer.**
+> Target: keep any single context load under 4,000 tokens.
+
+---
 
 -## TIER 0: UNIVERSAL RULES (Always Active)
 +## TIER 0: UNIVERSAL RULES (Always Active)
