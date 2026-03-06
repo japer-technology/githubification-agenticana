@@ -42,6 +42,52 @@ def log_success(msg):
 def log_error(msg):
     logging.error(f"{Colors.RED}[-] {msg}{Colors.ENDC}")
 
+def is_git_clean() -> bool:
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=ROOT_DIR,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        return result.returncode == 0 and not result.stdout.strip()
+    except Exception:
+        return False
+
+def safe_stash_local_changes() -> str | None:
+    """Stash local changes and return stash ref when successful, else None."""
+    try:
+        stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        name = f"agenticana-heartbeat-safe-evolve-{stamp}"
+        result = subprocess.run(
+            ["git", "stash", "push", "-u", "-m", name],
+            cwd=ROOT_DIR,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if result.returncode != 0:
+            return None
+        # git returns "No local changes to save" when tree is already clean.
+        if "No local changes to save" in (result.stdout + result.stderr):
+            return None
+        return "stash@{0}"
+    except Exception:
+        return None
+
+def restore_stash(stash_ref: str):
+    try:
+        subprocess.run(
+            ["git", "stash", "pop", stash_ref],
+            cwd=ROOT_DIR,
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+    except Exception:
+        pass
+
 class HeartbeatDaemon:
     def __init__(self, config_path):
         self.config_path = config_path
@@ -57,6 +103,16 @@ class HeartbeatDaemon:
         log_info(f"Executing task: {task['id']} - {task['description']}")
         start_time = time.time()
 
+        stash_ref = None
+        if "evolve" in task.get("id", "").lower() and not is_git_clean():
+            log_info("Working tree dirty before evolve. Applying safe auto-stash...")
+            stash_ref = safe_stash_local_changes()
+            if stash_ref:
+                log_success("Local changes stashed for isolated evolve cycle.")
+            else:
+                log_error("Could not stash local changes safely. Skipping evolve task.")
+                return
+
         try:
             # Execute command in shells
             process = subprocess.run(
@@ -64,7 +120,9 @@ class HeartbeatDaemon:
                 shell=True,
                 cwd=ROOT_DIR,
                 capture_output=True,
-                text=True
+                text=True,
+                encoding="utf-8",
+                errors="replace",
             )
 
             duration = time.time() - start_time
@@ -82,6 +140,10 @@ class HeartbeatDaemon:
 
         except Exception as e:
             log_error(f"Failed to execute {task['id']}: {str(e)}")
+        finally:
+            if stash_ref:
+                restore_stash(stash_ref)
+                log_info("Restored local changes after evolve task.")
 
     def start(self, once=False):
         log_info("Agentica Heartbeat Daemon starting...")

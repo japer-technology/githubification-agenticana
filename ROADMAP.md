@@ -8,67 +8,73 @@ This is the living roadmap for Agenticana. Items marked **open** are available f
 
 ## ✅ Completed Phases
 
-| Phase | Feature | Status |
-|-------|---------|--------|
-| P1 | ReasoningBank — vector decision memory | ✅ Shipped |
-| P2 | Model Router — cost-aware task routing | ✅ Shipped |
-| P3 | Research Node | ✅ Shipped |
-| P4 | Agent Exchange | ✅ Shipped |
-| P5 | Swarm Dispatcher — parallel agent execution | ✅ Shipped |
-| P6 | Vector Soul Memory | ✅ Shipped |
-| P7 | Soul Injection API + Control Dashboard | ✅ Shipped |
-| P8 | Sentinel — self-healing audit | ✅ Shipped |
-| P9 | Soul Bridge — cross-project memory | ✅ Shipped |
-| P10 | Heartbeat Daemon — background monitoring | ✅ Shipped |
-| P11 | Shadow Sandbox — isolated Git clone execution | ✅ Shipped |
-| P12 | Logic Simulacrum — 7-agent debate engine | ✅ Shipped |
-| P13 | Performance Pulse — benchmarking suite | ✅ Shipped |
-| P14 | Agentica CLI v2 — unified command interface | ✅ Shipped |
-| P15 | Real LLM Simulacrum — live Gemini agent debates | ✅ Shipped v6.0 |
-| P16 | Guardian Mode — pre-commit AI gate | ✅ Shipped v6.0 |
-| P17 | NL Swarm — plain English to swarm manifest | ✅ Shipped v6.0 |
-| P18 | ADR Generator — debate → architecture docs | ✅ Shipped v6.0 |
-| P19 | Proof-of-Work — signed commit attestations | ✅ Shipped v6.0 |
-| P20 | Multi-Model Simulacrum — cross-LLM agent debates | ✅ Shipped v6.1 |
-| P21 | Swarm Result Merger — parallel output consolidation | ✅ Shipped v6.1 |
-| P26 | Voice-to-Code Bridge | ✅ Auto-Evolved 2026-03-04 |
-| P27 | Cross-LLM Debate Voting | ✅ Auto-Evolved 2026-03-04 |
-| P28 | Local-First Vector Storage | ✅ Auto-Evolved 2026-03-06 |
-| P29 | GitHub Actions CI Agent | ✅ Auto-Evolved 2026-03-06 |
-| P30 | Agent Performance Leaderboard | ✅ Auto-Evolved 2026-03-06 |
-| P26+ | Voice-to-Code Bridge (Enhanced) | ✅ Auto-Evolved 2026-03-06 |
-| P27+ | Cross-LLM Debate Voting (Enhanced) | ✅ Auto-Evolved 2026-03-06 |
-| P29+ | GitHub Actions CI Agent (Enhanced) | ✅ Auto-Evolved 2026-03-06 |
-| P22 | Sovereign Dashboard — Flask API + live log streaming | ✅ Shipped v7.0 |
+| Phase | Feature                                              | Status                     |
+| ----- | ---------------------------------------------------- | -------------------------- |
+| P1    | ReasoningBank — vector decision memory               | ✅ Shipped                 |
+| P2    | Model Router — cost-aware task routing               | ✅ Shipped                 |
+| P3    | Research Node                                        | ✅ Shipped                 |
+| P4    | Agent Exchange                                       | ✅ Shipped                 |
+| P5    | Swarm Dispatcher — parallel agent execution          | ✅ Shipped                 |
+| P6    | Vector Soul Memory                                   | ✅ Shipped                 |
+| P7    | Soul Injection API + Control Dashboard               | ✅ Shipped                 |
+| P8    | Sentinel — self-healing audit                        | ✅ Shipped                 |
+| P9    | Soul Bridge — cross-project memory                   | ✅ Shipped                 |
+| P10   | Heartbeat Daemon — background monitoring             | ✅ Shipped                 |
+| P11   | Shadow Sandbox — isolated Git clone execution        | ✅ Shipped                 |
+| P12   | Logic Simulacrum — 7-agent debate engine             | ✅ Shipped                 |
+| P13   | Performance Pulse — benchmarking suite               | ✅ Shipped                 |
+| P14   | Agentica CLI v2 — unified command interface          | ✅ Shipped                 |
+| P15   | Real LLM Simulacrum — live Gemini agent debates      | ✅ Shipped v6.0            |
+| P16   | Guardian Mode — pre-commit AI gate                   | ✅ Shipped v6.0            |
+| P17   | NL Swarm — plain English to swarm manifest           | ✅ Shipped v6.0            |
+| P18   | ADR Generator — debate → architecture docs           | ✅ Shipped v6.0            |
+| P19   | Proof-of-Work — signed commit attestations           | ✅ Shipped v6.0            |
+| P20   | Multi-Model Simulacrum — cross-LLM agent debates     | ✅ Shipped v6.1            |
+| P21   | Swarm Result Merger — parallel output consolidation  | ✅ Shipped v6.1            |
+| P26   | Voice-to-Code Bridge                                 | ✅ Auto-Evolved 2026-03-04 |
+| P27   | Cross-LLM Debate Voting                              | ✅ Auto-Evolved 2026-03-04 |
+| P28   | Local-First Vector Storage                           | ✅ Auto-Evolved 2026-03-06 |
+| P29   | GitHub Actions CI Agent                              | ✅ Auto-Evolved 2026-03-06 |
+| P30   | Agent Performance Leaderboard                        | ✅ Auto-Evolved 2026-03-06 |
+| P26+  | Voice-to-Code Bridge (Enhanced)                      | ✅ Auto-Evolved 2026-03-06 |
+| P27+  | Cross-LLM Debate Voting (Enhanced)                   | ✅ Auto-Evolved 2026-03-06 |
+| P29+  | GitHub Actions CI Agent (Enhanced)                   | ✅ Auto-Evolved 2026-03-06 |
+| P28+  | Local-First Vector Storage (Enhanced)                | ✅ Auto-Evolved 2026-03-06 |
+| P22   | Sovereign Dashboard — Flask API + live log streaming | ✅ Shipped v7.0            |
 
 ---
 
 ## 🔜 Next Phases (Open for Contributors)
 
 ### P23: VS Code Extension
+
 **Status:** 🟡 Idea
 **Idea:** Native VS Code sidebar showing current Guardian status, recent attestations, quick-launch for NL Swarm, and ReasoningBank search.
 **Good for:** VS Code extension developer (TypeScript)
 
 ### P23: VS Code Extension
+
 **Status:** 🟡 Idea
 **Idea:** Native VS Code sidebar showing current Guardian status, recent attestations, quick-launch for NL Swarm, and ReasoningBank search.
 **Good for:** VS Code extension developer (TypeScript)
 [Start a Discussion →](https://github.com/ashrafmusa/agenticana/discussions/new)
 
 ### P24: Guardian Rule DSL
+
 **Status:** 🟡 Idea
 **Idea:** Let teams define custom pre-commit rules in a simple YAML format. E.g., "never commit without tests," "always sign with PoW if files > 5 changed."
 **Good for:** Python developer interested in DSL design
 [Start a Discussion →](https://github.com/ashrafmusa/agenticana/discussions/new)
 
 ### P25: The Sovereign Loop (Aggressive Autonomy)
+
 **Status:** 🚀 **PROPOSAL**
 **Mechanism:**
+
 1. **Intel Swarm**: Monitor competitor repos (e.g., `openclaw/openclaw`) for trending feature requests.
 2. **Self-Development**: Use NL Swarm to auto-implement missing features.
 3. **Auto-Merge**: Enable `auto-merge` if Shadow Sandbox + Guardian marks the PR as **CERTIFIED (Trust Score > 90)**.
-**Goal:** A repo that evolves faster than its competitors by self-monitoring and self-patching.
+   **Goal:** A repo that evolves faster than its competitors by self-monitoring and self-patching.
 
 ---
 
@@ -89,18 +95,18 @@ Browse [`good first issue`](https://github.com/ashrafmusa/agenticana/issues?q=is
 
 ## 🏗️ Architecture Goals (Long-term)
 
-| Goal | Status |
-|------|--------|
-| Zero-cloud operation (fully local) | ✅ Done |
-| Multi-LLM provider support | ✅ Done (P20) |
-| Web UI for non-CLI users | ✅ Done (P22 — Flask Dashboard) |
-| Competitor Intel Feed (11 rivals monitored) | ✅ Done |
-| Self-evolution via NL Swarm | ✅ Done |
-| Proof-of-Work commit attestations | ✅ Done |
-| Plugin/extension marketplace via Exchange | 🔜 Future |
-| Voice-to-Code (P26) | 🔜 Planned |
-| VS Code Extension (P23) | 🔜 Planned |
-| Agenticana-as-a-Service (hosted) | 🔜 Future |
+| Goal                                        | Status                          |
+| ------------------------------------------- | ------------------------------- |
+| Zero-cloud operation (fully local)          | ✅ Done                         |
+| Multi-LLM provider support                  | ✅ Done (P20)                   |
+| Web UI for non-CLI users                    | ✅ Done (P22 — Flask Dashboard) |
+| Competitor Intel Feed (11 rivals monitored) | ✅ Done                         |
+| Self-evolution via NL Swarm                 | ✅ Done                         |
+| Proof-of-Work commit attestations           | ✅ Done                         |
+| Plugin/extension marketplace via Exchange   | 🔜 Future                       |
+| Voice-to-Code (P26)                         | 🔜 Planned                      |
+| VS Code Extension (P23)                     | 🔜 Planned                      |
+| Agenticana-as-a-Service (hosted)            | 🔜 Future                       |
 
 ---
 
@@ -111,10 +117,10 @@ Have an idea for P25 and beyond?
 > Open a [GitHub Discussion](https://github.com/ashrafmusa/agenticana/discussions/new?category=ideas) with the label `phase-proposal`.
 > The Simulacrum will debate it. The best ideas get built.
 
-*Secretary Bird: we plan before we stomp. 🦅*
+_Secretary Bird: we plan before we stomp. 🦅_
 
 ## 🕵️ Live Competitor Intel (Auto-Updated)
-> Auto-generated by Sovereign Intel Swarm on 2026-03-06 20:35
+> Auto-generated by Sovereign Intel Swarm on 2026-03-06 20:47
 
 | Repo | Top Feature Gaps | Scanned |
 |------|-----------------|----------|
